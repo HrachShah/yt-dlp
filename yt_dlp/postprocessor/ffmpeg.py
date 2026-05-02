@@ -286,7 +286,11 @@ class FFmpegPostProcessor(PostProcessor):
         cmd.append(self._ffmpeg_filename_argument(path))
         self.write_debug(f'ffprobe command line: {shell_quote(cmd)}')
         stdout, _, _ = Popen.run(cmd, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
-        return json.loads(stdout)
+        try:
+            return json.loads(stdout)
+        except json.JSONDecodeError:
+            self.report_warning('ffprobe returned malformed JSON, output was: ' + stdout[:200])
+            raise PostProcessingError(f'ffprobe returned malformed JSON for {path}')
 
     def get_stream_number(self, path, keys, value):
         streams = self.get_metadata_object(path)['streams']
