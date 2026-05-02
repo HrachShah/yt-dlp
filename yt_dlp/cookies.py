@@ -152,7 +152,13 @@ def _extract_firefox_cookies(profile, container, logger):
         if not os.path.isfile(containers_path) or not os.access(containers_path, os.R_OK):
             raise FileNotFoundError(f'could not read containers.json in {search_root}')
         with open(containers_path, encoding='utf8') as containers:
-            identities = json.load(containers).get('identities', [])
+            try:
+                containers_data = json.load(containers)
+            except json.JSONDecodeError:
+                logger.warning(f'Could not parse containers.json at {containers_path}, treating as empty')
+                identities = []
+            else:
+                identities = containers_data.get('identities', [])
         container_id = next((context.get('userContextId') for context in identities if container in (
             context.get('name'),
             try_call(lambda: re.fullmatch(r'userContext([^\.]+)\.label', context['l10nID']).group()),
