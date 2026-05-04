@@ -313,11 +313,16 @@ class Updater:
         tag = f'tags/{tag}' if tag != 'latest' else tag
         url = f'{API_BASE_URL}/{self.requested_repo}/releases/{tag}'
         self.ydl.write_debug(f'Fetching release info: {url}')
-        return json.loads(self.ydl.urlopen(Request(url, headers={
+        raw = self.ydl.urlopen(Request(url, headers={
             'Accept': 'application/vnd.github+json',
             'User-Agent': 'yt-dlp',
             'X-GitHub-Api-Version': '2026-03-10',
-        })).read().decode())
+        })).read().decode()
+        try:
+            return json.loads(raw)
+        except json.JSONDecodeError as exc:
+            self._report_error(f'GitHub API returned non-JSON response for tag {tag}: {exc}', expected=True)
+            return {}
 
     def _get_version_info(self, tag: str) -> tuple[str | None, str | None]:
         if _VERSION_RE.fullmatch(tag):
