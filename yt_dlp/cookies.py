@@ -908,7 +908,7 @@ def _get_kwallet_network_wallet(keyring, logger):
         ], text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 
         if returncode:
-            logger.warning('failed to read NetworkWallet')
+            logger.warning(f'failed to read NetworkWallet (returncode={returncode}): {stdout.strip()}')
             return default_wallet
         else:
             logger.debug(f'NetworkWallet = "{stdout.strip()}"')
