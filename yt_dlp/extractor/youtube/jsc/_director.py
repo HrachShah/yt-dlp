@@ -134,7 +134,7 @@ class JsChallengeRequestDirector:
                             f'         {provider_bug_report_message(provider, before="")}')
                         continue
                     results.append((response.request, response.response))
-            except Exception as e:
+            except (ValueError, TypeError, KeyError) as e:
                 if isinstance(e, JsChallengeProviderRejectedRequest) and e._skipped_components:
                     skipped_components.extend(e._skipped_components)
                 self._handle_error(e, provider, next_requests)
