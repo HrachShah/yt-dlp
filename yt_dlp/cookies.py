@@ -907,7 +907,7 @@ def _get_kwallet_network_wallet(keyring, logger):
         else:
             logger.debug(f'NetworkWallet = "{stdout.strip()}"')
             return stdout.strip()
-    except Exception as e:
+    except OSError:
         logger.warning(f'exception while obtaining NetworkWallet: {e}')
         return default_wallet
 
@@ -950,7 +950,7 @@ def _get_kwallet_password(browser_keyring_name, keyring, logger):
             else:
                 logger.debug('password found')
                 return stdout.rstrip(b'\n')
-    except Exception as e:
+    except OSError as e:
         logger.warning(f'exception running kwallet-query: {error_to_str(e)}')
         return b''
 
@@ -1005,7 +1005,7 @@ def _get_mac_keyring_password(browser_keyring_name, logger):
             logger.warning('find-generic-password failed')
             return None
         return stdout.rstrip(b'\n')
-    except Exception as e:
+    except OSError as e:
         logger.warning(f'exception running find-generic-password: {error_to_str(e)}')
         return None
 
