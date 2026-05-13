@@ -87,7 +87,7 @@ class FragmentFD(FileDownloader):
             ctx['fragment_index'] = ytdl_data['downloader']['current_fragment']['index']
             if 'extra_state' in ytdl_data['downloader']:
                 ctx['extra_state'] = ytdl_data['downloader']['extra_state']
-        except Exception:
+        except (json.JSONDecodeError, OSError):
             ctx['ytdl_corrupt'] = True
         finally:
             stream.close()
