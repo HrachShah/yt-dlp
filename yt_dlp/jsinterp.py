@@ -255,7 +255,7 @@ class Debugger:
                 cls.write(stmt, level=allow_recursion)
             try:
                 ret, should_ret = f(self, stmt, local_vars, allow_recursion, *args, **kwargs)
-            except Exception as e:
+            except (ExtractorError, JS_Throw, JS_Break, JS_Continue, TypeError, KeyError, IndexError, ValueError, ZeroDivisionError, AttributeError, OSError) as e:
                 if cls.ENABLED:
                     if isinstance(e, ExtractorError):
                         e = e.orig_msg
@@ -518,7 +518,7 @@ class JSInterpreter:
                 ret, should_abort = self.interpret_statement(try_expr, local_vars, allow_recursion)
                 if should_abort:
                     return ret, True
-            except Exception as e:
+            except (JS_Throw, JS_Break, JS_Continue, ExtractorError, TypeError, KeyError, IndexError, ValueError, ZeroDivisionError, AttributeError) as e:
                 # XXX: This works for now, but makes debugging future issues very hard
                 err = e
 
