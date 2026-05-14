@@ -63,7 +63,7 @@ def parse_iter(parsed: typing.Any, /, *, revivers: dict[str, collections.abc.Cal
             name, source, reviver = source
             try:
                 target[index] = reviver(target[index])
-            except Exception as error:
+            except (ValueError, TypeError, KeyError, IndexError) as error:
                 yield TypeError(f'failed to parse {source} as {name!r}: {error}')
                 target[index] = None
             continue
@@ -99,8 +99,8 @@ def parse_iter(parsed: typing.Any, /, *, revivers: dict[str, collections.abc.Cal
                 elif value[0] == 'Date':
                     try:
                         result = dt.datetime.fromtimestamp(parse_iso8601(value[1]), tz=dt.timezone.utc)
-                    except Exception:
-                        yield ValueError(f'invalid date: {value[1]!r}')
+                    except (ValueError, TypeError, OSError) as exc:
+                        yield ValueError(f'invalid date: {value[1]!r}: {exc}')
                         result = None
 
                 elif value[0] == 'Set':
