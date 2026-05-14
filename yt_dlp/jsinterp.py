@@ -255,7 +255,7 @@ class Debugger:
                 cls.write(stmt, level=allow_recursion)
             try:
                 ret, should_ret = f(self, stmt, local_vars, allow_recursion, *args, **kwargs)
-            except Exception as e:
+            except (ValueError, TypeError, RuntimeError) as e:
                 if cls.ENABLED:
                     if isinstance(e, ExtractorError):
                         e = e.orig_msg
