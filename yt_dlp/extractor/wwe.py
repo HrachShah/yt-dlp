@@ -129,7 +129,7 @@ class WWEPlaylistIE(WWEBaseIE):
                 continue
             try:
                 entry = self._extract_entry(data, url)
-            except Exception:
+            except (ValueError, KeyError, TypeError):
                 continue
             entry['extractor_key'] = WWEIE.ie_key()
             entries.append(entry)
