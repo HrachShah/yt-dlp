@@ -558,7 +558,7 @@ class Response(io.IOBase):
             if self.fp.closed:
                 self.close()
             return res
-        except Exception as e:
+        except (OSError, ValueError) as e:
             raise TransportError(cause=e) from e
 
     def close(self):
