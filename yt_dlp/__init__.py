@@ -422,7 +422,7 @@ def validate_options(opts):
             cmd = f'--parse-metadata {shell_quote(f)}'
             try:
                 actions = [MetadataFromFieldPP.to_action(f)]
-            except Exception as err:
+            except (ValueError, TypeError) as err:
                 raise ValueError(f'{cmd} is invalid; {err}')
         else:
             cmd = f'--replace-in-metadata {shell_quote(f)}'
