@@ -128,7 +128,7 @@ class PoTokenCache:
                 self.logger.trace(
                     f'Retrieved cache spec {spec} from cache spec provider "{provider.PROVIDER_NAME}"')
                 return spec
-            except Exception as e:
+            except (ValueError, TypeError) as e:
                 self.logger.error(
                     f'Error occurred with "{provider.PROVIDER_NAME}" PO Token cache spec provider: '
                     f'{e!r}{provider_bug_report_message(provider)}')
@@ -191,7 +191,7 @@ class PoTokenCache:
                     f'Error from "{provider.PROVIDER_NAME}" PO Token cache provider: '
                     f'{e!r}{provider_bug_report_message(provider) if not e.expected else ""}')
                 continue
-            except Exception as e:
+            except (OSError, ValueError, TypeError) as e:
                 self.logger.error(
                     f'Error occurred with "{provider.PROVIDER_NAME}" PO Token cache provider: '
                     f'{e!r}{provider_bug_report_message(provider)}',
@@ -238,7 +238,7 @@ class PoTokenCache:
                 self.logger.warning(
                     f'Error from "{provider.PROVIDER_NAME}" PO Token cache provider: '
                     f'{e!r}{provider_bug_report_message(provider) if not e.expected else ""}')
-            except Exception as e:
+            except (OSError, ValueError, TypeError) as e:
                 self.logger.error(
                     f'Error occurred with "{provider.PROVIDER_NAME}" PO Token cache provider: '
                     f'{e!r}{provider_bug_report_message(provider)}')
