@@ -73,7 +73,7 @@ def dirs_in_zip(archive):
                 Path(file).parents for file in zip_.namelist()))
     except FileNotFoundError:
         pass
-    except Exception as e:
+    except (OSError, zipfile.BadZipFile) as e:
         write_string(f'WARNING: Could not read zip file {archive}: {e}\n')
     return ()
 
