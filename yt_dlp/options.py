@@ -331,7 +331,7 @@ def create_parser():
                 *aliases, nargs=nargs, dest=parser.ALIAS_DEST, type='str' if nargs else None,
                 metavar=' '.join(args), help=opts.format(*args), action='callback',
                 callback=_alias_callback, callback_kwargs={'opts': opts, 'nargs': nargs})
-        except Exception as err:
+        except (ValueError, IndexError, KeyError) as err:
             raise optparse.OptionValueError(f'wrong {opt_str} formatting; {err}')
 
     def _alias_callback(option, opt_str, value, parser, opts, nargs):
