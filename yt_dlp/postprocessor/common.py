@@ -152,7 +152,7 @@ class PostProcessor(metaclass=PostProcessorMetaClass):
     def try_utime(self, path, atime, mtime, errnote='Cannot update utime of file'):
         try:
             os.utime(path, (atime, mtime))
-        except Exception:
+        except OSError:
             self.report_warning(errnote)
 
     def _configuration_args(self, exe, *args, **kwargs):
