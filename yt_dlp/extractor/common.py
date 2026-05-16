@@ -3911,6 +3911,8 @@ class InfoExtractor:
                 self.to_screen('Interrupted by user')
             except self.CommentsDisabled:
                 return {'comments': None, 'comment_count': None}
+            except (NotImplementedError, asyncio.CancelledError):
+                raise
             except Exception as e:
                 if self.get_param('ignoreerrors') is not True:
                     raise
