@@ -3911,7 +3911,7 @@ class InfoExtractor:
                 self.to_screen('Interrupted by user')
             except self.CommentsDisabled:
                 return {'comments': None, 'comment_count': None}
-            except Exception as e:
+            except (AttributeError, TypeError, OSError) as e:
                 if self.get_param('ignoreerrors') is not True:
                     raise
                 self._downloader.report_error(e)
