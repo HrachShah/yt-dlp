@@ -136,7 +136,7 @@ class EmbedThumbnailPP(FFmpegPostProcessor):
                     meta.tags['covr'] = [MP4Cover(data=thumb_data, imageformat=f[type_])]
                     meta.save()
                     temp_filename = filename
-                except Exception as err:
+                except (ValueError, TypeError, OSError) as err:
                     self.report_warning(f'unable to embed using mutagen; {err}')
                     success = False
 
