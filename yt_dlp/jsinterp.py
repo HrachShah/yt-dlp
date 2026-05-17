@@ -382,7 +382,7 @@ class JSInterpreter:
 
         try:
             return _OPERATORS[op](left_val, right_val)
-        except Exception as e:
+        except (ValueError, TypeError, KeyError) as e:
             raise self.Exception(f'Failed to evaluate {left_val!r} {op} {right_val!r}', expr, cause=e)
 
     def _index(self, obj, idx, allow_undefined=False):
@@ -390,7 +390,7 @@ class JSInterpreter:
             return len(obj)
         try:
             return obj[int(idx)] if isinstance(obj, list) else obj[str(idx)]
-        except Exception as e:
+        except (ValueError, TypeError, IndexError, KeyError) as e:
             if allow_undefined:
                 return JS_Undefined
             raise self.Exception(f'Cannot get index {idx}', repr(obj), cause=e)
@@ -518,7 +518,7 @@ class JSInterpreter:
                 ret, should_abort = self.interpret_statement(try_expr, local_vars, allow_recursion)
                 if should_abort:
                     return ret, True
-            except Exception as e:
+            except (ValueError, TypeError, RecursionError) as e:
                 # XXX: This works for now, but makes debugging future issues very hard
                 err = e
 
