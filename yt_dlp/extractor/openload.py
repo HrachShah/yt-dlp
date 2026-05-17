@@ -235,7 +235,7 @@ class PhantomJSwrapper:
         try:
             stdout, stderr, returncode = Popen.run(cmd, timeout=self.options['timeout'] / 1000,
                                                    text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        except Exception as e:
+        except (subprocess.TimeoutExpired, OSError, ValueError, TypeError) as e:
             raise ExtractorError(f'{note} failed: Unable to run PhantomJS binary', cause=e)
         if returncode:
             raise ExtractorError(f'{note} failed with returncode {returncode}:\n{stderr.strip()}')
