@@ -20,19 +20,19 @@ try:
     from . import _requests
 except ImportError:
     pass
-except Exception as e:
+except (SyntaxError, AttributeError, OSError) as e:
     warnings.warn(f'Failed to import "requests" request handler: {e}' + bug_reports_message())
 
 try:
     from . import _websockets
 except ImportError:
     pass
-except Exception as e:
+except (SyntaxError, AttributeError, OSError) as e:
     warnings.warn(f'Failed to import "websockets" request handler: {e}' + bug_reports_message())
 
 try:
     from . import _curlcffi
 except ImportError:
     pass
-except Exception as e:
+except (SyntaxError, AttributeError, OSError) as e:
     warnings.warn(f'Failed to import "curl_cffi" request handler: {e}' + bug_reports_message())
