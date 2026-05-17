@@ -191,11 +191,11 @@ def preferredencoding():
 def write_json_file(obj, fn):
     """ Encode obj as JSON and write it to fn, atomically if possible """
 
-    tf = tempfile.NamedTemporaryFile(
-        prefix=f'{os.path.basename(fn)}.', dir=os.path.dirname(fn),
-        suffix='.tmp', delete=False, mode='w', encoding='utf-8')
-
+    tf = None
     try:
+        tf = tempfile.NamedTemporaryFile(
+            prefix=f'{os.path.basename(fn)}.', dir=os.path.dirname(fn),
+            suffix='.tmp', delete=False, mode='w', encoding='utf-8')
         with tf:
             json.dump(obj, tf, ensure_ascii=False)
         if sys.platform == 'win32':
@@ -209,8 +209,9 @@ def write_json_file(obj, fn):
             os.chmod(tf.name, 0o666 & ~mask)
         os.rename(tf.name, fn)
     except Exception:
-        with contextlib.suppress(OSError):
-            os.remove(tf.name)
+        if tf is not None:
+            with contextlib.suppress(OSError):
+                os.remove(tf.name)
         raise
 
 
