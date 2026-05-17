@@ -2361,7 +2361,7 @@ class OnDemandPagedList(PagedList):
 
             try:
                 page_results = self.getpage(pagenum)
-            except Exception:
+            except (IndexError, KeyError, ValueError, OSError):
                 self._pagecount = pagenum - 1
                 raise
             if startv != 0 or endv is not None:
