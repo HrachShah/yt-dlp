@@ -117,7 +117,7 @@ class RequestDirector:
                 response = handler.send(request)
             except RequestError:
                 raise
-            except Exception as e:
+            except (AttributeError, TypeError, OSError) as e:
                 self.logger.error(
                     f'[{handler.RH_NAME}] Unexpected error: {error_to_str(e)}{bug_reports_message()}',
                     is_error=False)
