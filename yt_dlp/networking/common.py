@@ -239,7 +239,7 @@ class RequestHandler(abc.ABC):
         self._logger = logger
         self.headers = headers or {}
         self.cookiejar = cookiejar if cookiejar is not None else YoutubeDLCookieJar()
-        self.timeout = float(timeout or DEFAULT_TIMEOUT)
+        self.timeout = float(DEFAULT_TIMEOUT if timeout is None else timeout)
         self.proxies = proxies or {}
         self.source_address = source_address
         self.verbose = verbose
