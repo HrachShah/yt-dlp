@@ -242,7 +242,10 @@ class Urllib3LoggingHandler(logging.Handler):
                 self._logger.stdout(msg)
 
         except Exception:
-            self.handleError(record)
+            try:
+                self.handleError(record)
+            except Exception:
+                pass
 
 
 @register_rh
