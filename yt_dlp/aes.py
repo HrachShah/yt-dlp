@@ -203,7 +203,7 @@ def aes_cbc_encrypt(data, key, iv, *, padding_mode='pkcs7'):
 
 def aes_gcm_decrypt_and_verify(data, key, tag, nonce):
     """
-    Decrypt with aes in GBM mode and checks authenticity using tag
+    Decrypt with aes in GCM mode and checks authenticity using tag
 
     @param {int[]} data        cipher
     @param {int[]} key         16-Byte cipher key
@@ -212,7 +212,8 @@ def aes_gcm_decrypt_and_verify(data, key, tag, nonce):
     @returns {int[]}           decrypted data
     """
 
-    # XXX: check aes, gcm param
+    if len(nonce) == 0:
+        raise ValueError('nonce must be at least 1 byte')
 
     hash_subkey = aes_encrypt([0] * BLOCK_SIZE_BYTES, key_expansion(key))
 
