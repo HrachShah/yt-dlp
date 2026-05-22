@@ -35,7 +35,6 @@ from .utils import (
     DownloadError,
     YoutubeDLError,
     Popen,
-    error_to_str,
     expand_path,
     is_path_like,
     sanitize_url,
@@ -950,8 +949,8 @@ def _get_kwallet_password(browser_keyring_name, keyring, logger):
             else:
                 logger.debug('password found')
                 return stdout.rstrip(b'\n')
-    except Exception as e:
-        logger.warning(f'exception running kwallet-query: {error_to_str(e)}')
+    except OSError as e:
+        logger.warning(f'failed to run kwallet-query: {e}')
         return b''
 
 
@@ -1005,8 +1004,8 @@ def _get_mac_keyring_password(browser_keyring_name, logger):
             logger.warning('find-generic-password failed')
             return None
         return stdout.rstrip(b'\n')
-    except Exception as e:
-        logger.warning(f'exception running find-generic-password: {error_to_str(e)}')
+    except OSError as e:
+        logger.warning(f'failed to run find-generic-password: {e}')
         return None
 
 
