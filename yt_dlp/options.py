@@ -289,7 +289,7 @@ def create_parser():
         try:
             keys = map(process_key, keys) if process_key else keys
             val = process(val) if process else val
-        except Exception as err:
+        except (ValueError, TypeError) as err:
             raise optparse.OptionValueError(f'wrong {opt_str} formatting; {err}')
         for key in keys:
             out_dict[key] = [*out_dict.get(key, []), val] if append else val
