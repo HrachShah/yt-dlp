@@ -109,8 +109,8 @@ def load_cookies(cookie_file, browser_specification, ydl):
             cookie_jars.append(jar)
 
         return _merge_cookie_jars(cookie_jars)
-    except Exception:
-        raise CookieLoadError('failed to load cookies')
+    except (OSError, ValueError, sqlite3.DatabaseError) as e:
+        raise CookieLoadError(f'failed to load cookies: {e}')
 
 
 def extract_cookies_from_browser(browser_name, profile=None, logger=YDLLogger(), *, keyring=None, container=None):
