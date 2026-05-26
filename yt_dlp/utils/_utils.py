@@ -182,7 +182,7 @@ def preferredencoding():
     try:
         pref = locale.getpreferredencoding()
         'TEST'.encode(pref)
-    except Exception:
+    except OSError:
         pref = 'UTF-8'
 
     return pref
@@ -208,7 +208,7 @@ def write_json_file(obj, fn):
             os.umask(mask)
             os.chmod(tf.name, 0o666 & ~mask)
         os.rename(tf.name, fn)
-    except Exception:
+    except OSError:
         with contextlib.suppress(OSError):
             os.remove(tf.name)
         raise
@@ -2361,7 +2361,7 @@ class OnDemandPagedList(PagedList):
 
             try:
                 page_results = self.getpage(pagenum)
-            except Exception:
+            except OSError:
                 self._pagecount = pagenum - 1
                 raise
             if startv != 0 or endv is not None:
