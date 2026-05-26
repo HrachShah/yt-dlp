@@ -327,7 +327,7 @@ class UrllibResponseAdapter(Response):
                 # Catch-all for any cases where underlying file is closed
                 self.close()
             return data
-        except Exception as e:
+        except (OSError, EOFError, http.client.HTTPException) as e:
             handle_response_read_exceptions(e)
             raise e
 
@@ -438,7 +438,7 @@ class UrllibRH(RequestHandler, InstanceStoreMixin):
             # such as if request method contains illegal control characters [1]
             # 1. https://github.com/python/cpython/blob/987b712b4aeeece336eed24fcc87a950a756c3e2/Lib/http/client.py#L1256
             raise RequestError(cause=e) from e
-        except Exception as e:
+        except (OSError, http.client.HTTPException) as e:
             handle_response_read_exceptions(e)
             raise  # unexpected
 
