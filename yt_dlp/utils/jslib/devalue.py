@@ -63,7 +63,7 @@ def parse_iter(parsed: typing.Any, /, *, revivers: dict[str, collections.abc.Cal
             name, source, reviver = source
             try:
                 target[index] = reviver(target[index])
-            except Exception as error:
+            except (TypeError, AttributeError) as error:
                 yield TypeError(f'failed to parse {source} as {name!r}: {error}')
                 target[index] = None
             continue
