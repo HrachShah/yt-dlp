@@ -664,7 +664,7 @@ class YoutubeDL:
 
         try:
             windows_enable_vt_mode()
-        except Exception as e:
+        except OSError as e:
             self.write_debug(f'Failed to enable VT mode: {e}')
 
         # hehe "immutable" namespace
@@ -1714,7 +1714,7 @@ class YoutubeDL:
                     self.report_error(msg)
                 except ExtractorError as e:  # An error we somewhat expected
                     self.report_error(str(e), e.format_traceback())
-                except Exception as e:
+                except OSError as e:
                     if self.params.get('ignoreerrors'):
                         self.report_error(str(e), tb=encode_compat_str(traceback.format_exc()))
                     else:
