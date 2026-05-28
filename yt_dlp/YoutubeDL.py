@@ -664,7 +664,7 @@ class YoutubeDL:
 
         try:
             windows_enable_vt_mode()
-        except Exception as e:
+        except OSError as e:
             self.write_debug(f'Failed to enable VT mode: {e}')
 
         # hehe "immutable" namespace
@@ -3626,7 +3626,7 @@ class YoutubeDL:
                 try:
                     for ph in self._post_hooks:
                         ph(info_dict['filepath'])
-                except Exception as err:
+                except (TypeError, ValueError, OSError) as err:
                     self.report_error(f'post hooks: {err}')
                     return
                 info_dict['__write_download_archive'] = True
