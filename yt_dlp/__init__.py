@@ -450,7 +450,7 @@ def validate_options(opts):
     if opts.playlist_items is not None:
         try:
             tuple(PlaylistEntries.parse_playlist_items(opts.playlist_items))
-        except Exception as err:
+        except (ValueError, TypeError) as err:
             raise ValueError(f'Invalid playlist-items {opts.playlist_items!r}: {err}')
 
     opts.geo_bypass_country, opts.geo_bypass_ip_block = None, None
