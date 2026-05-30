@@ -457,7 +457,7 @@ def validate_options(opts):
     if opts.geo_bypass.lower() not in ('default', 'never'):
         try:
             GeoUtils.random_ipv4(opts.geo_bypass)
-        except Exception:
+        except (ValueError, OSError):
             raise ValueError(f'Unsupported --xff "{opts.geo_bypass}"')
         if len(opts.geo_bypass) == 2:
             opts.geo_bypass_country = opts.geo_bypass
