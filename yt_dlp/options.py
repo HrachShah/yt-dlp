@@ -289,7 +289,7 @@ def create_parser():
         try:
             keys = map(process_key, keys) if process_key else keys
             val = process(val) if process else val
-        except Exception as err:
+        except (ValueError, TypeError, KeyError, IndexError) as err:
             raise optparse.OptionValueError(f'wrong {opt_str} formatting; {err}')
         for key in keys:
             out_dict[key] = [*out_dict.get(key, []), val] if append else val
@@ -319,7 +319,7 @@ def create_parser():
             nargs = len({i if f == '' else f
                          for i, (_, f, _, _) in enumerate(Formatter.parse(opts)) if f is not None})
             opts.format(*map(str, range(nargs)))  # validate
-        except Exception as err:
+        except (ValueError, IndexError) as err:
             raise optparse.OptionValueError(f'wrong {opt_str} OPTIONS formatting; {err}')
         if alias_group not in parser.option_groups:
             parser.add_option_group(alias_group)
