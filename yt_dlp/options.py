@@ -319,7 +319,7 @@ def create_parser():
             nargs = len({i if f == '' else f
                          for i, (_, f, _, _) in enumerate(Formatter.parse(opts)) if f is not None})
             opts.format(*map(str, range(nargs)))  # validate
-        except Exception as err:
+        except (ValueError, KeyError, IndexError) as err:
             raise optparse.OptionValueError(f'wrong {opt_str} OPTIONS formatting; {err}')
         if alias_group not in parser.option_groups:
             parser.add_option_group(alias_group)
@@ -331,7 +331,7 @@ def create_parser():
                 *aliases, nargs=nargs, dest=parser.ALIAS_DEST, type='str' if nargs else None,
                 metavar=' '.join(args), help=opts.format(*args), action='callback',
                 callback=_alias_callback, callback_kwargs={'opts': opts, 'nargs': nargs})
-        except Exception as err:
+        except (ValueError, TypeError) as err:
             raise optparse.OptionValueError(f'wrong {opt_str} formatting; {err}')
 
     def _alias_callback(option, opt_str, value, parser, opts, nargs):
