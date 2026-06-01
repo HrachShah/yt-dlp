@@ -907,8 +907,8 @@ def _get_kwallet_network_wallet(keyring, logger):
         else:
             logger.debug(f'NetworkWallet = "{stdout.strip()}"')
             return stdout.strip()
-    except Exception as e:
-        logger.warning(f'exception while obtaining NetworkWallet: {e}')
+    except OSError:
+        logger.warning('exception while obtaining NetworkWallet')
         return default_wallet
 
 
