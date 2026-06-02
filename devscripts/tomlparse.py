@@ -123,7 +123,7 @@ def parse_value(data: str, index: int):
         try:
             value = func(value)
             break
-        except Exception:
+        except (ValueError, KeyError):
             pass
 
     return match.end(), value
