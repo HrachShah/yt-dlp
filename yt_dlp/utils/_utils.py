@@ -182,7 +182,7 @@ def preferredencoding():
     try:
         pref = locale.getpreferredencoding()
         'TEST'.encode(pref)
-    except Exception:
+    except (LookupError, UnicodeError):
         pref = 'UTF-8'
 
     return pref
@@ -208,7 +208,7 @@ def write_json_file(obj, fn):
             os.umask(mask)
             os.chmod(tf.name, 0o666 & ~mask)
         os.rename(tf.name, fn)
-    except Exception:
+    except (ValueError, OSError, TypeError):
         with contextlib.suppress(OSError):
             os.remove(tf.name)
         raise
