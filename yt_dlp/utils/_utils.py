@@ -179,10 +179,16 @@ def preferredencoding():
     Returns the best encoding scheme for the system, based on
     locale.getpreferredencoding() and some further tweaks.
     """
+    pref = ''
     try:
         pref = locale.getpreferredencoding()
         'TEST'.encode(pref)
-    except Exception:
+    except (OSError, UnicodeEncodeError):
+        # locale.getpreferredencoding() can raise OSError on exotic
+        # platforms with no usable locale database; 'TEST'.encode(pref)
+        # raises UnicodeEncodeError when pref is an encoding name the
+        # interpreter does not recognise (e.g. POSIX returns "ANSI_X3.4-1968"
+        # on some musl/Alpine containers). Fall back to UTF-8 in both cases.
         pref = 'UTF-8'
 
     return pref

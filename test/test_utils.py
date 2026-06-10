@@ -89,6 +89,7 @@ from yt_dlp.utils import (
     parse_codecs,
     parse_count,
     parse_dfxp_time_expr,
+    preferredencoding,
     parse_duration,
     parse_filesize,
     parse_iso8601,
@@ -2102,6 +2103,11 @@ Line 1
                          msg='int fn with no expected_type should give None')
         self.assertEqual(try_call(lambda x: {}, total, args=(42, ), expected_type=int), 42,
                          msg='expect first int result with expected_type int')
+
+    def test_preferredencoding(self):
+        self.assertIsInstance(preferredencoding(), str)
+        # guaranteed to be a string whether the locale query succeeds or not
+        self.assertTrue(preferredencoding())
 
     def test_variadic(self):
         self.assertEqual(variadic(None), (None, ))
