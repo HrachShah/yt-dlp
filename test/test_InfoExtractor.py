@@ -15,6 +15,7 @@ from test.helper import FakeYDL, expect_dict, expect_value, http_server_port
 from yt_dlp.compat import compat_etree_fromstring
 from yt_dlp.extractor import YoutubeIE, get_info_extractor
 from yt_dlp.extractor.common import InfoExtractor
+from yt_dlp.extractor.wykop import WykopBaseIE
 from yt_dlp.utils import (
     ExtractorError,
     RegexNotFoundError,
@@ -56,6 +57,19 @@ class DummyIE(InfoExtractor):
     def _sort_formats(self, formats, field_preference=[]):
         self._downloader.sort_formats(
             {'formats': formats, '_format_sort_fields': field_preference})
+
+
+class TestWykopBaseIE(unittest.TestCase):
+    def test_api_headers_are_not_shared_between_calls(self):
+        ie = WykopBaseIE(FakeYDL())
+        calls = []
+        ie._download_json = lambda *args, **kwargs: calls.append(kwargs) or {}
+
+        ie._do_call_api('posts', '1', data={'body': 'hello'})
+        ie._do_call_api('posts', '1')
+
+        self.assertEqual(calls[0]['headers'], {'Content-Type': 'application/json'})
+        self.assertEqual(calls[1]['headers'], {})
 
 
 class TestInfoExtractor(unittest.TestCase):
