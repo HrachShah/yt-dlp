@@ -86,9 +86,11 @@ def get_urls(urls, batchfile, verbose):
     batch_urls = []
     if batchfile is not None:
         try:
-            batch_urls = read_batch_urls(
-                read_stdin(None if verbose == -1 else 'URLs') if batchfile == '-'
-                else open(expand_path(batchfile), encoding='utf-8', errors='ignore'))
+            if batchfile == '-':
+                batch_source = read_stdin(None if verbose == -1 else 'URLs')
+            else:
+                batch_source = open(expand_path(batchfile), encoding='utf-8', errors='ignore')
+            batch_urls = read_batch_urls(batch_source)
             if verbose == 1:
                 write_string('[debug] Batch file urls: ' + repr(batch_urls) + '\n')
         except OSError:
