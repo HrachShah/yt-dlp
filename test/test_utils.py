@@ -92,6 +92,7 @@ from yt_dlp.utils import (
     parse_duration,
     parse_filesize,
     parse_iso8601,
+    parse_m3u8_attributes,
     parse_qs,
     parse_resolution,
     pkcs1pad,
@@ -1385,6 +1386,9 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(parse_count('1.1kk views'), 1100000)
         self.assertEqual(parse_count('10M views'), 10000000)
         self.assertEqual(parse_count('has 10M views'), 10000000)
+
+    def test_parse_m3u8_attributes(self):
+        self.assertEqual(parse_m3u8_attributes('KEY=,OTHER=""'), {'KEY': '', 'OTHER': ''})
 
     def test_parse_resolution(self):
         self.assertEqual(parse_resolution(None), {})
