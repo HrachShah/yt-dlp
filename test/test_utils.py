@@ -2160,6 +2160,10 @@ Line 1
         headers6 = HTTPHeaderDict(a=1, b=2)
         self.assertEqual(pickle.loads(pickle.dumps(headers6)), headers6)
 
+        headers7 = HTTPHeaderDict()
+        headers7.setdefault('Ytdl-Test', 0)
+        self.assertEqual(headers7['ytdl-test'], '0')
+
     def test_extract_basic_auth(self):
         assert extract_basic_auth('http://:foo.bar') == ('http://:foo.bar', None)
         assert extract_basic_auth('http://foo.bar') == ('http://foo.bar', None)

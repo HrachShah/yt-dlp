@@ -136,7 +136,7 @@ class HTTPHeaderDict(dict):
         if key in self.__sensitive_map:
             return super().__getitem__(key)
 
-        self[key] = default or ''
+        self[key] = '' if default is None else default
         return self[key]
 
     def update(self, other, /, **kwargs) -> None:
