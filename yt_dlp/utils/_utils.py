@@ -4966,19 +4966,18 @@ class Config:
         except OSError:
             return default  # silently skip if file is not present
         try:
-            enc, skip = determine_file_encoding(optionf.read(512))
-            optionf.seek(skip, io.SEEK_SET)
-        except OSError:
-            enc = None  # silently skip read errors
-        try:
+            try:
+                enc, skip = determine_file_encoding(optionf.read(512))
+                optionf.seek(skip, io.SEEK_SET)
+            except OSError:
+                enc = None  # silently skip read errors
             # FIXME: https://github.com/ytdl-org/youtube-dl/commit/dfe5fa49aed02cf36ba9f743b11b0903554b5e56
             contents = optionf.read().decode(enc or preferredencoding())
-            res = shlex.split(contents, comments=True)
-        except Exception as err:
+            return shlex.split(contents, comments=True)
+        except (OSError, UnicodeError, ValueError) as err:
             raise ValueError(f'Unable to parse "{filename}": {err}')
         finally:
             optionf.close()
-        return res
 
     @staticmethod
     def hide_login_info(opts):

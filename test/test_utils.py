@@ -2036,6 +2036,18 @@ Line 1
             with contextlib.suppress(OSError):
                 os.remove(FILE)
 
+    def test_config_read_file_reports_invalid_encoding_declaration(self):
+        filename = 'test_config_read_file_invalid_encoding'
+        with open(filename, 'wb') as config_file:
+            config_file.write(b'# coding: \xff\n--verbose')
+
+        try:
+            with self.assertRaisesRegex(ValueError, 'Unable to parse'):
+                Config.read_file(filename)
+        finally:
+            with contextlib.suppress(OSError):
+                os.remove(filename)
+
     def test_determine_file_encoding(self):
         self.assertEqual(determine_file_encoding(b''), (None, 0))
         self.assertEqual(determine_file_encoding(b'--verbose -x --audio-format mkv\n'), (None, 0))
