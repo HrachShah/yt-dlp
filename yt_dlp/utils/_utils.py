@@ -182,7 +182,7 @@ def preferredencoding():
     try:
         pref = locale.getpreferredencoding()
         'TEST'.encode(pref)
-    except Exception:
+    except (LookupError, TypeError, ValueError):
         pref = 'UTF-8'
 
     return pref
